@@ -1,5 +1,8 @@
+require 'Dotenv'
+ENV = Dotenv.load 
+
 def reload_note_taker
-	load '/Users/willdengler/my_code/ruby/note_taker/note_taker.rb'
+	load ENV['NOTE_TAKER_LOCATION']
 end
 
 def write_note(note, *keywords, title:'')
@@ -83,7 +86,7 @@ class Note
 	attr_reader :title, :note, :keywords, :timestamp
 
 	DELIMINATOR = '------------------------------------------------'.freeze
-	ARCHIVE = '/Users/willdengler/my_code/ruby/note_taker/archive/'
+	ARCHIVE = ENV['NOTES_LOCATION']
 
 	def initialize(title:, note:, keywords:, timestamp:nil)
 		@timestamp = timestamp
