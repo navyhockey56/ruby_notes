@@ -28,7 +28,7 @@ def read_notes(date_string:nil, days_ago:nil)
 		(0..days_ago).each {
 			file_name = "#{Note::ARCHIVE}#{date.to_s}.json"
 			date = date.prev_day
-			notes += eval(File.read(file_name)) if file_names.include? file_name		
+			notes += eval(File.read(file_name)).reverse if file_names.include? file_name		
 		} 
 		notes.reverse.map { |note| Note.restore(note) } 
 	else   
