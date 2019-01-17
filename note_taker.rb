@@ -1,9 +1,14 @@
-require 'Dotenv'
-
-NOTE_TAKER_ENV = Dotenv.load('/Users/willdengler/my_code/ruby/note_taker/.env')
+# You need an environment.rb file that sits next to your note_taker.
+# The environment.rb file must: 
+# - Define module NoteTakerEnvironment
+# - Define class level methods: 'note_taker_location', 'archive_location'
+# 	where 'note_taker_location' defines the location of this file
+#   and 'arvhive_location' defines the folder to keep your notes in
+require_relative 'environment.rb'
+require 'Date'
 
 def reload_note_taker
-	load NOTE_TAKER_ENV['NOTE_TAKER_LOCATION']
+	load NoteTakerEnvironment.note_taker_location
 end
 
 def write_note(note, *keywords, title:'')
@@ -87,7 +92,7 @@ class Note
 	attr_reader :title, :note, :keywords, :timestamp
 
 	DELIMINATOR = '------------------------------------------------'.freeze
-	ARCHIVE = NOTE_TAKER_ENV['NOTES_LOCATION']
+	ARCHIVE = NoteTakerEnvironment.archive_location
 
 	def initialize(title:, note:, keywords:, timestamp:nil)
 		@timestamp = timestamp
