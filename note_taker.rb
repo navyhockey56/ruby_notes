@@ -35,7 +35,7 @@ module NoteTaker
 			# Retrieves the notes from today to the past :days_ago 
 			notes = []
 			date = Date.today 
-			file_names = Dir[Note::ARCHIVE + '*.json']
+			file_names = Dir[NoteTaker::NoteTakerEnvironment.archive_location + '*.json']
 			(0..days_ago).each {
 				file_name = "#{NoteTaker::NoteTakerEnvironment.archive_location}#{date.to_s}.json"
 				date = date.prev_day
