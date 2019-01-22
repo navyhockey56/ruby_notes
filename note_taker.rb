@@ -6,6 +6,7 @@
 #   and 'arvhive_location' defines the folder to keep your notes in
 require_relative 'environment.rb'
 require 'Date'
+require 'Json'
 
 module NoteTaker
 
