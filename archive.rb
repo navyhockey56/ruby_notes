@@ -2,34 +2,6 @@ module RubyNotes
 
   class NoteArchive
 
-    # Begin class methods
-      
-    def NoteArchive.create_new_archive(name)
-      location = RubyNotes::RubyNotesEnvironment.archive_location + name
-      
-      raise ("A directory already exists at location #{location}. " \
-            "You must remove this location manually if you want to replace it.") if File.directory?(location)
-
-      raise "A non-directory file exists at location #{location}. Notes cannot be written here." if File.exists?(location)
-      
-      puts "Creating a new archive at: #{location}"
-      `mkdir #{location}`
-      
-      NoteArchive.new(location)
-    end
-
-    def NoteArchive.get_all_archives
-      Dir[RubyNotes::RubyNotesEnvironment.archive_location + "/*"].map do |f|
-        if File.directory?(f)
-          NoteArchive.new(f)
-        else
-          nil
-        end
-      end.compact
-    end
-
-    # Begin object methods 
-
     attr_reader :name, :location
 
     def initialize(location)
