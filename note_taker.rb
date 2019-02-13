@@ -57,6 +57,12 @@ module RubyNotes
 		true
 	end
 
+	def print_recent_notes(days_ago, archive=nil)
+		archive = name_to_archive(archive)
+		archive.get_recent_notes(days_ago).each(&:print)
+		true
+	end
+
 	def search_notes(archive: nil)
 		raise "Unimplemented"
 	end

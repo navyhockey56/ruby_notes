@@ -67,9 +67,9 @@ module RubyNotes
       notes = [] 
       file_names = Dir[@location + '*.rnote'].sort
       file_names.each { |file_name|
-        notes += JSON.parse(File.read(file_name)).reverse
+        notes += JSON.parse(File.read(file_name))
       }
-      notes.reverse.map { |note| Note.restore(note) } 
+      notes.map { |note| Note.restore(note) } 
     end
 
     def get_todays_notes
@@ -91,7 +91,7 @@ module RubyNotes
       date = Date.today 
       file_names = Dir[@location + '*.rnote']
       (0..days_ago).each {
-        file_name = "#{directory}#{date.to_s}.rnote"
+        file_name = "#{@location}#{date.to_s}.rnote"
         date = date.prev_day
         notes += JSON.parse(File.read(file_name)).reverse if file_names.include? file_name    
       } 
