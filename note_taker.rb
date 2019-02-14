@@ -79,8 +79,10 @@ module RubyNotes
 		true
 	end
 
-	def search_notes(archive: nil)
-		raise "Unimplemented"
+	def search_notes(title: nil, keywords: nil, includes: nil, pattern: nil, archive: nil)
+		archive = name_to_archive(archive)
+		archive.search(title: title, keywords: keywords, includes: includes, pattern: pattern).each(&:print)
+		true
 	end
 
 	def create_new_archive(name)

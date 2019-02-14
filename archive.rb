@@ -120,23 +120,15 @@ module RubyNotes
     end
 
     def search(title: nil, keywords: nil, includes: nil, pattern: nil)
-      raise "Unimplemented"
-
-      # Retrieve the notes
-      #notes = read_notes(date_string:"ALL", personal: personal) unless start_date
-      #notes ||= get_notes_for_date_range(start_date, number_of_days, personal)
-
-      #unless keywords.empty?
-        # Remove any notes missing the required keywords
-      #  notes.select! { |note| (keywords & note.keywords) == keywords } 
-      #end
-
-      #if pattern
-      #  raise ":pattern must be a Regexp" unless pattern.class == Regexp
-      #  notes.select! { |note| note.note =~ pattern} 
-      #end
-
-      #notes
+      notes = get_all_notes
+      notes.delete_if! { |note| note.title != title } if title
+      if keywords
+        keywords = Array(keywords)
+        notes.delete_if! { |note| (note.keywords & keywords).emply? } 
+      end
+      notes.select! { |note| note.note.include? includes } if includes
+      notes.select! { |note| note.note =~ pattern } if pattern
+      notes 
     end
 
   end
