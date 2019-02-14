@@ -49,7 +49,15 @@ module RubyNotes
     end
 
     def get_this_weeks_notes
-      raise "Unimplemented"
+      notes = []
+      date = Date.today
+      file_names = Dir[@location + '*.rnote']
+      (0..(date.wday)).each do 
+        file_name = "#{@location}#{date.to_s}.rnote"
+        date = date.prev_day
+        notes += JSON.parse(File.read(file_name)).reverse if file_names.include? file_name
+      end
+      notes.reverse.map { |note| Note.restore(note) } 
     end
 
     def get_notes_on(date_string)
@@ -70,8 +78,45 @@ module RubyNotes
       notes.reverse.map { |note| Note.restore(note) } 
     end
 
-    def get_notes_in_range(start: nil, end: nil)
-      raise "Unimplemented"
+    # @paran [Integer] start_range - "Start with notes from *start_range* days ago". 
+    #   Defaults to today if nil is provided, 
+    # @param [Integer] end_range - "... and keep giving up to and include *end_range* days ago"
+    #   Defaults to the first day of the repository if nil is provided.
+    def get_notes_in_range(start_range=nil, end_range=nil)
+      return [] if start_range.nil? && end_range.nil?
+      
+      date = Date.today
+      start_range = 0 if start_range.nil? || start_range < 0
+      unless end_range
+        first_day = first_day_of_archive
+        end_range = 0
+        while date >= first_day
+          end_range += 1
+          first_day = first_day.next_day
+        end 
+      end
+      return [] if start_range > end_range
+
+      while start_range > 0 
+        date = date.prev_day
+        start_range -= 1
+        end_range -= 1
+      end
+
+      notes = []
+      file_names = Dir[@location + '*.rnote']
+      (0..end_range).each do 
+        file_name = "#{@location}#{date.to_s}.rnote"
+        date = date.prev_day
+        notes += JSON.parse(File.read(file_name)).reverse if file_names.include? file_name
+      end
+      notes.reverse.map { |note| Note.restore(note) }
+    end
+
+    def first_day_of_archive
+      file_name = Dir[@location + '/*.rnote'].first
+      file_name.gsub!(@location + "/", "")
+      Date.parse(file_name.gsub(".rnote", ""))
     end
 
     def search(title: nil, keywords: nil, includes: nil, pattern: nil)
