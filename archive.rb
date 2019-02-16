@@ -62,7 +62,7 @@ module RubyNotes
 
     def get_notes_on(date_string)
       file_name = create_file_name(date_string)
-      raise "Could not find any notes for: #{date_string}." unless File.exist? file_name
+      return [] unless File.exist? file_name
       JSON.parse(File.read(file_name)).map { |note| Note.restore(note) } 
     end
 

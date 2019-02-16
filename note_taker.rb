@@ -45,6 +45,7 @@ module RubyNotes
 		archive = name_to_archive(archive)
 		notes = archive.get_todays_notes
 		notes.each(&:print)
+		puts "No notes have been written today." if notes.empty?
 		true
 	end
 
